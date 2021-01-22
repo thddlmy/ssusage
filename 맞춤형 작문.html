@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang=ko>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="ssusage_data.js"></script>
+    <script src="맞춤형 작문.js"></script>
+    <title>SSUssage</title>
+</head>
+<body>
+    <!--header 상단메뉴바-->
+    <div class="header">
+        <div class="header_name"><a href="main.html"><strong>S<span style="color: #475D8D;">S</span>Ussage.</strong></a></div>
+        <div class="header_menu">
+            <div class="header_items"><a href="작문 찾기.html">작문 찾기</a></div>
+            <div class="header_items"><a href="맞춤형 작문.html"><span style="color: #C3A565;">맞춤형 작문</span></a></div>
+            <div class="header_items"><a href="편집하기.html">편집하기</a></div>
+        </div>
+        <div class="header_blank">　　　　　　　　　　</div>
+    </div>
+    <!--content 부분-->
+    <div id="wrapper" style="TEXT-ALIGN: center">
+        <div id="content_title">
+            <div id="title">
+                <img src="media/hit.png" width="55"><br><b>맞춤형 작문</b>
+            </div>
+            <div id="temperature">
+            <!--<p>오늘의 기온 정보는-->
+            <!-- weather widget start -->
+            <!--<a target="_blank" href="https://booked.kr/weather/chungnim-dong-493234"><img src="https://w.bookcdn.com/weather/picture/13_493234_1_24_fff5d9_158_fff5d9_333333_08488D_0_fff5d9_333333_0_6.png?scode=2&domid=593&anc_id=70812"  alt="booked.net"/></a>
+            입니다.</p>-->
+                <div id="temperature_temp"></div>
+                <img id="temperature_img">
+                <div id="temperature_comment"></div>
+            </div>
+            <script>
+                var temp_widget = document.getElementById("temperature_temp");
+                var img_widget = document.getElementById("temperature_img");
+                var comment_widget = document.getElementById("temperature_comment");
+                temp_func();
+
+                function temp_func() {
+                    setTimeout(function() {
+                    temp_widget.innerHTML = temp+"°C";
+                    img_widget.src = imgUrl;
+                    comment_widget.innerHTML = comment; // 날씨관련해서 너무 밋밋하길래 넣었어요!
+                    }, 1000);
+                }    
+            </script>
+        </div>
+        <div id="weather" class="container">
+            <div id=weather_tempComment></div>
+            <script>
+                var today_temperature = document.getElementById("weather_tempComment");
+                weather_comment();
+
+                function weather_comment() {
+                    setTimeout(function(){
+                        var season = checkTemp();
+                        switch(season) {
+                            case 0: today_temperature.innerHTML="[따뜻한 봄 날씨] 입니다.";
+                                    break;
+                            case 1: today_temperature.innerHTML="[무더운 여름 날씨] 입니다.";
+                                    break;
+                            case 2: today_temperature.innerHTML="[선선한 가을 날씨] 입니다.";
+                                    break;
+                            case 3: today_temperature.innerHTML="[추운 겨울 날씨] 입니다.";
+                                    break;
+                        }
+                    }, 1000);
+                }
+            </script>
+            <div id=weather_subComment>
+            슈세지에서 주변 지인들에게 건넬 수 있는 따뜻한 안부인사 추천해드립니다.
+            </div>
+        </div>
+
+        <div id="content">
+        <!--작문 내용 복사기능 table-->
+        <table id="all_box">
+            <script>
+                var table = document.getElementById('all_box');
+                makeTable();
+                function makeTable() {
+                    setTimeout(function() {
+                    var row=""
+                    var season = checkTemp();
+                    console.log("season" + season)
+                    for(i=0; i <ssusage_weather_data.length-3; i+=3) {
+                        if(season==ssusage_weather_data[i][1]) {
+                            row += `<tr>
+                                            <td class="message_box" data-clipboard-text="${ssusage_weather_data[i][0]}" >${ssusage_weather_data[i][0]}</td>
+                                            <td class="message_box" data-clipboard-text="${ssusage_weather_data[i+1][0]}">${ssusage_weather_data[i+1][0]}</td>
+                                            <td class="message_box" data-clipboard-text="${ssusage_weather_data[i+2][0]}">${ssusage_weather_data[i+2][0]}</td>
+                                    </tr>`
+                        }
+                    }
+                    table.innerHTML= row;
+                }, 1000);
+            }
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+            <script>
+              var clipboard = new ClipboardJS( '.message_box' );
+              clipboard.on( 'success', function() {
+                alert( 'Copy Success' );
+              } );
+              clipboard.on( 'error', function() {
+                alert( 'Copy Fail' );
+              } );
+            </script>
+        </table>
+        </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+</html>
